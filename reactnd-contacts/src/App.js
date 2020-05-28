@@ -38,7 +38,7 @@ class App extends Component {
 
   render() {
     return (
-      <div> 
+      <div>
         <Route path='/list' render={() => (
           <ListContacts
             onDeleteContact={this.removeContact}

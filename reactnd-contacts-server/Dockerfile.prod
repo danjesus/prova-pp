@@ -1,19 +1,17 @@
 FROM node:13.14.0-alpine as build
 WORKDIR /app
-ENV PATH /app/node_modules/.bin:$PATH
-COPY ./package.json ./
-COPY ./package-lock.json ./
+COPY ./package.json /app
+COPY ./package-lock.json /app
 RUN npm ci --silent
-RUN npm install react-scripts@3.4.1 -g --silent
-COPY ./ ./
-RUN npm run build
+COPY . /app
 
-# use nginx alpine to serve static files
-FROM nginx:stable-alpine
-COPY --from=build /app/build /usr/share/nginx/html
+# use alpine to serve static files
+FROM node:13.14.0-alpine
+WORKDIR /app
+COPY --from=build /app /app
 
 # expose http and https ports
-EXPOSE 80
-EXPOSE 443
+EXPOSE 5001
+EXPOSE 5002
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start"]
