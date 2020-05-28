@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  serve:
+    stdin_open: true
+    container_name: serve
+    build:
+      context: ../reactnd-contacts-server
+      dockerfile: Dockerfile
+    volumes:
+      # map volumes to hot reload work
+      - ../reactnd-contacts-server:/app
+      - ../reactnd-contacts-server/node_modules:/app/node_modules
+    ports:
+      - 3002:3000
